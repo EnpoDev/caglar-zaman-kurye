@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title ?? 'Kurye Yönetim Sistemi' }}</title>
+    <title>{{ $title ?? 'seferxlogistics' }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
@@ -19,22 +19,28 @@
 
         <!-- Sidebar -->
         <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-               class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-[#181818] border-r border-gray-200 dark:border-gray-800 transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static">
+               class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-[#181818] border-r border-gray-200 dark:border-gray-800 transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static flex flex-col">
 
             <!-- Sidebar Header -->
             <div class="flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-800">
                 <div class="flex items-center space-x-3">
                     <div class="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center">
-                        <span class="text-white dark:text-black font-bold text-lg">K</span>
+                        <span class="text-white dark:text-black font-bold text-xs">SL</span>
                     </div>
-                    <span class="text-lg font-semibold text-black dark:text-white">Kurye Yönetim</span>
+                    <span class="text-base font-semibold text-black dark:text-white">seferxlogistics</span>
                 </div>
+            </div>
+
+            <!-- İşletme Adı -->
+            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
+                <p class="text-sm font-medium text-black dark:text-white">{{ config('app.business_name', 'Irmak Fırın & Cafe') }}</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400">İşletme</p>
             </div>
 
             <!-- Navigation -->
             <nav class="flex-1 overflow-y-auto p-4 space-y-1">
 
-                <!-- Ana Sayfa / Harita -->
+                <!-- Harita -->
                 <a href="{{ route('harita') }}"
                    class="flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('harita') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,17 +67,17 @@
                     <div x-show="openDropdown === 'siparis' || {{ request()->is('siparis*') ? 'true' : 'false' }}"
                          x-collapse
                          class="ml-8 space-y-1">
-                        <a href="{{ route('siparis.aktif') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('siparis.aktif') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
-                            Aktif Siparişler
+                        <a href="{{ route('siparis.liste') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('siparis.liste') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Sipariş
                         </a>
                         <a href="{{ route('siparis.gecmis') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('siparis.gecmis') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
-                            Sipariş Geçmişi
+                            Geçmiş
                         </a>
                         <a href="{{ route('siparis.iptal') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('siparis.iptal') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
-                            İptal Edilen
+                            İptal Edilenler
                         </a>
                         <a href="{{ route('siparis.istatistik') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('siparis.istatistik') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
-                            İstatistikler
+                            İstatistik
                         </a>
                     </div>
                 </div>
@@ -103,11 +109,23 @@
                     <div x-show="openDropdown === 'yonetim' || {{ request()->is('yonetim*') ? 'true' : 'false' }}"
                          x-collapse
                          class="ml-8 space-y-1">
-                        <a href="{{ route('yonetim.kullanicilar') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('yonetim.kullanicilar') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
-                            Kullanıcılar
+                        <a href="{{ route('yonetim.entegrasyonlar') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('yonetim.entegrasyonlar') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Entegrasyonlar
                         </a>
-                        <a href="{{ route('yonetim.roller') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('yonetim.roller') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
-                            Rol & Yetki
+                        <a href="{{ route('yonetim.paketler') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('yonetim.paketler') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Paketler
+                        </a>
+                        <a href="{{ route('yonetim.urunler') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('yonetim.urunler') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Ürünler
+                        </a>
+                        <a href="{{ route('yonetim.kartlar') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('yonetim.kartlar') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Kayıtlı Kartlarım
+                        </a>
+                        <a href="{{ route('yonetim.abonelikler') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('yonetim.abonelikler') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Aboneliklerim
+                        </a>
+                        <a href="{{ route('yonetim.islemler') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('yonetim.islemler') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            İşlemlerim
                         </a>
                     </div>
                 </div>
@@ -118,7 +136,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                     </svg>
-                    <span class="font-medium">Menü</span>
+                    <span class="font-medium">Menü Yönetimi</span>
                 </a>
 
                 <!-- İşletmem -->
@@ -139,19 +157,28 @@
                     <div x-show="openDropdown === 'isletme' || {{ request()->is('isletmem*') ? 'true' : 'false' }}"
                          x-collapse
                          class="ml-8 space-y-1">
-                        <a href="{{ route('isletmem.bilgiler') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('isletmem.bilgiler') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
-                            İşletme Bilgileri
+                        <a href="{{ route('isletmem.kullanicilar') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('isletmem.kullanicilar') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Kullanıcı Yönetimi
                         </a>
-                        <a href="{{ route('isletmem.subeler') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('isletmem.subeler') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
-                            Şube Yönetimi
+                        <a href="{{ route('isletmem.menu') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('isletmem.menu') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Menü Yönetimi
+                        </a>
+                        <a href="{{ route('isletmem.menu-entegrasyon') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('isletmem.menu-entegrasyon') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Menü Entegrasyonu
+                        </a>
+                        <a href="{{ route('isletmem.musteriler') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('isletmem.musteriler') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Müşteri Yönetimi
+                        </a>
+                        <a href="{{ route('isletmem.kuryeler') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('isletmem.kuryeler') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Kurye Yönetimi
                         </a>
                     </div>
                 </div>
 
                 <!-- Hesap Ayarları -->
                 <div class="space-y-1">
-                    <button @click="openDropdown = openDropdown === 'hesap' ? null : 'hesap'"
-                            :class="{ 'bg-gray-100 dark:bg-gray-900': openDropdown === 'hesap' || {{ request()->is('hesap*') ? 'true' : 'false' }} }"
+                    <button @click="openDropdown = openDropdown === 'ayarlar' ? null : 'ayarlar'"
+                            :class="{ 'bg-gray-100 dark:bg-gray-900': openDropdown === 'ayarlar' || {{ request()->is('ayarlar*') ? 'true' : 'false' }} }"
                             class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
                         <div class="flex items-center space-x-3">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,26 +187,56 @@
                             </svg>
                             <span class="font-medium">Hesap Ayarları</span>
                         </div>
-                        <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': openDropdown === 'hesap' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': openDropdown === 'ayarlar' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                     </button>
-                    <div x-show="openDropdown === 'hesap' || {{ request()->is('hesap*') ? 'true' : 'false' }}"
+                    <div x-show="openDropdown === 'ayarlar' || {{ request()->is('ayarlar*') ? 'true' : 'false' }}"
                          x-collapse
                          class="ml-8 space-y-1">
-                        <a href="{{ route('hesap.profil') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('hesap.profil') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
-                            Profil Ayarları
+                        <a href="{{ route('ayarlar.genel') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('ayarlar.genel') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Genel Ayarlar
                         </a>
-                        <a href="{{ route('hesap.guvenlik') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('hesap.guvenlik') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
-                            Güvenlik
+                        <a href="{{ route('ayarlar.uygulama') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('ayarlar.uygulama') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Uygulama Ayarları
+                        </a>
+                        <a href="{{ route('ayarlar.odeme') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('ayarlar.odeme') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Ödeme Yöntemleri
+                        </a>
+                        <a href="{{ route('ayarlar.yazici') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('ayarlar.yazici') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Yazıcı Yönetimi
+                        </a>
+                        <a href="{{ route('ayarlar.bildirim') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('ayarlar.bildirim') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Bildirim ayarları
+                        </a>
+                        <a href="{{ route('ayarlar.yazarkasa') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('ayarlar.yazarkasa') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                            Yazarkasa Ayarları
                         </a>
                     </div>
                 </div>
 
+                <!-- Tema yapılandırması -->
+                <a href="{{ route('tema') }}"
+                   class="flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('tema') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                    </svg>
+                    <span class="font-medium">Tema yapılandırması</span>
+                </a>
+
+                <!-- Teknik Destek -->
+                <a href="{{ route('destek') }}"
+                   class="flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('destek') ? 'bg-black dark:bg-white text-white dark:text-black' : 'text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                    <span class="font-medium">Teknik Destek</span>
+                </a>
+
             </nav>
 
-            <!-- Sidebar Footer -->
-            <div class="border-t border-gray-200 dark:border-gray-800 p-4">
+            <!-- Sidebar Footer - User Section -->
+            <div class="border-t border-gray-200 dark:border-gray-800 p-4 mt-auto">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center space-x-3">
                         <div class="w-8 h-8 bg-black dark:bg-white rounded-full flex items-center justify-center">
@@ -187,7 +244,7 @@
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-black dark:text-white truncate">{{ auth()->user()->name }}</p>
-                            <p class="text-xs text-gray-600 dark:text-gray-400 truncate">Yönetici</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400 truncate">{{ auth()->user()->email }}</p>
                         </div>
                     </div>
                 </div>
